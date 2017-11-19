@@ -26,6 +26,8 @@ ExprNode* getExpression (std::list<Token>::iterator& it, std::list<Token>::itera
     ExprNode* result =  getAddSub (it, end);
     if ( !result )
         result = getMulDiv (it, end);
+    if ( !result )
+        result = getLeaf (it, end);
     return result;
 }
 
