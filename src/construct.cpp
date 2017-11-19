@@ -73,6 +73,9 @@ ExprNode* getAddSub (std::list<Token>::iterator& it, std::list<Token>::iterator 
         return nullptr;
 
 
+    if ( it->type == TokenType::SUB )
+        std::swap (left, right);
+
     result->setLeft (left);
     result->setRight (right);
 
@@ -152,6 +155,7 @@ ExprNode* getBrackets (std::list<Token>::iterator& it, std::list<Token>::iterato
 
 ExprNode* getLeaf (std::list<Token>::iterator& it, std::list<Token>::iterator end)
 {
+    ParseTransaction transaction (it);
     ExprNode* result = nullptr;
     if ( it == end )
         return result; 
@@ -159,13 +163,26 @@ ExprNode* getLeaf (std::list<Token>::iterator& it, std::list<Token>::iterator en
     {
         result = new ExprNode;
         result->setData (it->value);
+        it++;
     }
     else if ( it->type == TokenType::IDENTIFIER )
     {
         result = new ExprNode;
-        result->setData (it->value);
+        ExprNode* left = new ExprNode;
+        ExprNode* right = nullptr;
+        transaction.setMiddle (result);
+        transaction.setLeft (left);
+        left->setData (it->value);
+        result->setData ("func eval");
+        it++;
+
+        right = getBrackets (it, end);
+        if ( !right )
+            return nullptr;
+        result->setLeft (left);
+        result->setRight (right);
     }
-    it++;
+    transaction.commit();
     return result;
 }
 
