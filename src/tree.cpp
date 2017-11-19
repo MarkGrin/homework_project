@@ -56,12 +56,13 @@ void Operation::evaluate ()
         if ( right_ )
             delete right_;
         left_ = right_ = nullptr;
+        return ;
     }
     left_->evaluate ();
     right_->evaluate ();
-    long int left = boost::lexical_cast<long int>(left_->getData());
-    long int right = boost::lexical_cast<long int>(right_->getData());
-    long int result = 0;
+    double left = boost::lexical_cast<double>(left_->getData());
+    double right = boost::lexical_cast<double>(right_->getData());
+    double result = 0;
     if (data_ == "+")
         result = left + right;
     if (data_ == "-")
@@ -82,10 +83,17 @@ void Operation::evaluate ()
 void Call::evaluate ()
 {
     if ( !left_ || !right_ )
+    {
+        if ( left_ )
+            delete left_;
+        if ( right_ )
+            delete right_;
+        left_ = right_ = nullptr;
         return ;
+    }
     right_->evaluate ();
-    long int right = boost::lexical_cast<long int>(right_->getData());
-    long int result = 0;
+    double right = boost::lexical_cast<double>(right_->getData());
+    double result = 0;
     if (left_->getData() == "cos")
         result = cos(right);
     else if (left_->getData() == "sin")
