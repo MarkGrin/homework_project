@@ -1,4 +1,5 @@
 #include "tokenizer.hpp"
+#include "tree.hpp"
 
 #include <iostream>
 #include <fstream>
@@ -6,15 +7,21 @@
 
 int main (int argc, char** argv)
 {
-    const char* charGraph = "graph{\na -- b;\n}\0";
-    Agraph_t* graph = agmemread(const_cast<char*>(charGraph));
-    if (graph)
-        std::cout << "GRAPH\n";
+
+    Expresser::ExprNode node;
+    node.setData ("Alpha");
+    node.setLeft (new Expresser::ExprNode());
+    node.setRight(new Expresser::ExprNode());
+    node.getRight()->setData("Beta");
+    node.getLeft()->setData("Gamma");
+
+    std::string graphString;
+    node.write (graphString, std::size_t{0});
+
+    Agraph_t* graph = agmemread(const_cast<char*>(graphString.data()));
 
     GVC_t* gvc;
     gvc = gvContext();
-    if (gvc)
-        std::cout << "GVC\n";
 
     gvLayout (gvc, graph, "dot");
 
