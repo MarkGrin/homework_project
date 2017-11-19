@@ -23,12 +23,12 @@ void ExprNode::write (std::string& dot, std::size_t& node)
     dot += "node" + std::to_string(nodeNumber) + "[label=\"" + data_ + "\"];\n";
     if ( left_ )
     {
-        dot += "node" + std::to_string(nodeNumber) + " - node" + std::to_string(node);
+        dot += "node" + std::to_string(nodeNumber) + " - node" + std::to_string(node) + ";\n";
         left_->write(dot, node);
     }
     if ( right_ )
     {
-        dot += "node" + std::to_string(nodeNumber) + " - node" + std::to_string(node) + ";";
+        dot += "node" + std::to_string(nodeNumber) + " - node" + std::to_string(node) + ";\n";
         right_->write(dot, node);
     }
 
