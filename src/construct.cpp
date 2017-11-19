@@ -1,70 +1,11 @@
 #include "construct.hpp"
+#include "parseTransaction.hpp"
 
 namespace Expresser
 {
 
 namespace
 {
-
-class ParseTransaction
-{
-    ParseTransaction () = delete;
-    ParseTransaction (const ParseTransaction&) = delete;
-    ParseTransaction (ParseTransaction&&) = delete;
-    ParseTransaction& operator = (const ParseTransaction&) = delete;
-    ParseTransaction& operator = (ParseTransaction&&) = delete;
-
-    std::list<Token>::iterator backup;
-    std::list<Token>::iterator& it;
-    const ExprNode* left;
-    const ExprNode* right;
-    const ExprNode* middle;
-
-    bool success;
-
-    public:
-
-    ParseTransaction (std::list<Token>::iterator& save)
-        :
-            backup  (save),
-            it      (save),
-            left    (nullptr),
-            right   (nullptr),
-            middle  (nullptr),
-            success (false)
-    {}
-
-    void setLeft (const ExprNode* l)
-    {
-        left = l;
-    }
-    void setRight (const ExprNode* r)
-    {
-        right = r;
-    }
-    void setMiddle (const ExprNode* m)
-    {
-        middle = m;
-    }
-    void commit ()
-    {
-        success = true;
-    }
-
-    ~ParseTransaction ()
-    {
-        if ( success )
-            return ;
-        it = backup;
-        if ( left )
-            delete left;
-        if ( right )
-            delete right;
-        if ( middle )
-            delete middle;
-    }
-
-};    
 
 ExprNode* getGr0 (std::list<Token>::iterator& it, std::list<Token>::iterator end, std::string& error);
 ExprNode* getExpression (std::list<Token>::iterator& it, std::list<Token>::iterator end, std::string& error);
