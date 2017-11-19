@@ -126,7 +126,6 @@ ExprNode* getMulDiv (std::list<Token>::iterator& it, std::list<Token>::iterator 
     transaction.commit();
     return result;
 }
-}
 
 ExprNode* getBrackets (std::list<Token>::iterator& it, std::list<Token>::iterator end, std::string& error)
 {
