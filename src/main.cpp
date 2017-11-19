@@ -2,7 +2,7 @@
 
 #include <iostream>
 #include <fstream>
-#include "gvc.h"
+#include <graphviz/gvc.h>
 
 int main (int argc, char** argv)
 {
