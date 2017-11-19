@@ -18,7 +18,7 @@ int main (int argc, char** argv)
     std::string graphString = "graph {\n";
     std::size_t i = 0;
     node.write (graphString, i);
-    graph += "\n}";
+    graphString += "\n}";
 
     Agraph_t* graph = agmemread(const_cast<char*>(graphString.data()));
 
