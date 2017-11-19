@@ -10,6 +10,7 @@ namespace
 ExprNode* getGr0 (std::list<Token>::iterator& it, std::list<Token>::iterator end, std::string& error);
 ExprNode* getExpression (std::list<Token>::iterator& it, std::list<Token>::iterator end, std::string& error);
 ExprNode* getAddSub (std::list<Token>::iterator& it, std::list<Token>::iterator end, std::string& error);
+ExprNode* getMulDiv (std::list<Token>::iterator& it, std::list<Token>::iterator end, std::string& error);
 ExprNode* getBrackets (std::list<Token>::iterator& it, std::list<Token>::iterator end, std::string& error);
 ExprNode* getLeaf (std::list<Token>::iterator& it, std::list<Token>::iterator end, std::string& error);
 
@@ -20,7 +21,10 @@ ExprNode* getGr0 (std::list<Token>::iterator& it, std::list<Token>::iterator end
 
 ExprNode* getExpression (std::list<Token>::iterator& it, std::list<Token>::iterator end, std::string& error)
 {
-    return getAddSub (it, end, error);
+    ExprNode* result =  getAddSub (it, end, error);
+    if ( !result )
+        result = getMulDiv (it, end, error);
+    return result;
 }
 
 ExprNode* getAddSub (std::list<Token>::iterator& it, std::list<Token>::iterator end, std::string& error)
@@ -34,7 +38,9 @@ ExprNode* getAddSub (std::list<Token>::iterator& it, std::list<Token>::iterator 
     ExprNode* right;
     ExprNode* result;
 
-    left = getBrackets (it, end, error);
+    left = getMulDiv (it, end, error);
+    if ( !left )
+        left = getBrackets (it, end, error);
     if ( !left )
         left = getLeaf (it, end, error);
     if ( !left )
@@ -46,7 +52,7 @@ ExprNode* getAddSub (std::list<Token>::iterator& it, std::list<Token>::iterator 
         return nullptr;
 
     if ( it->type != TokenType::ADD && it->type != TokenType::SUB)
-        return error += ", expected +/-:", nullptr;
+        return error += ", expected +,-:", nullptr;
 
     transaction.setMiddle(result = new ExprNode);
     if ( it->type == TokenType::ADD )
@@ -70,6 +76,56 @@ ExprNode* getAddSub (std::list<Token>::iterator& it, std::list<Token>::iterator 
 
     transaction.commit();
     return result;
+}
+
+ExprNode* getMulDiv (std::list<Token>::iterator& it, std::list<Token>::iterator end, std::string& error)
+{
+    if (it == end)
+        return nullptr;
+
+    ParseTransaction transaction (it);
+
+    ExprNode* left;
+    ExprNode* right;
+    ExprNode* result;
+
+    left = getBrackets (it, end, error);
+    if ( !left )
+        left = getLeaf (it, end, error);
+    if ( !left )
+        return nullptr;
+
+    transaction.setLeft (left);
+
+    if ( it == end )
+        return nullptr;
+
+    if ( it->type != TokenType::MUL && it->type != TokenType::DIV)
+        return error += ", expected *,/:", nullptr;
+
+    transaction.setMiddle(result = new ExprNode);
+    if ( it->type == TokenType::MUL )
+        result->setData ("*");
+    else
+        result->setData ("/");
+
+    it++;
+
+    right = getMulDiv (it, end, error);
+    if ( !right )
+        right = getBrackets (it, end, error);
+    if ( !right )
+        right = getLeaf (it, end, error);
+    if ( !right )
+        return nullptr;
+
+
+    result->setLeft (left);
+    result->setRight (right);
+
+    transaction.commit();
+    return result;
+}
 }
 
 ExprNode* getBrackets (std::list<Token>::iterator& it, std::list<Token>::iterator end, std::string& error)
