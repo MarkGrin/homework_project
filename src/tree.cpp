@@ -36,4 +36,3 @@ void ExprNode::write (std::string& dot, std::size_t& node)
 
 }
 
-#endif /* H_39249F013CA64163B165AAF8E256098C */

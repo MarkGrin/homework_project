@@ -25,7 +25,7 @@ class ExprNode
 
     ExprNode ();
 
-    virtual void write (std::string& dot, std::size_t node);
+    virtual void write (std::string& dot, std::size_t& node);
 
     void setLeft (ExprNode* left)
     {
