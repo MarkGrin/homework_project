@@ -115,7 +115,9 @@ ExprNode* getAddSub (std::list<Token>::iterator& it, std::list<Token>::iterator 
 
     it++;
 
-    right = getBrackets (it, end, error);
+    right = getExpression (it, end, error);
+    if ( !right )
+        right = getBrackets (it, end, error);
     if ( !right )
         right = getLeaf (it, end, error);
     if ( !right )
