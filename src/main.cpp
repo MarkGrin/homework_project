@@ -20,6 +20,8 @@ int main (int argc, char** argv)
     node.write (graphString, i);
     graphString += "\n}";
 
+    std::cout << graphString << "\n";
+
     Agraph_t* graph = agmemread(const_cast<char*>(graphString.data()));
 
     GVC_t* gvc;
