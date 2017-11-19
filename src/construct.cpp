@@ -56,7 +56,7 @@ ExprNode* getAddSub (std::list<Token>::iterator& it, std::list<Token>::iterator 
         return nullptr;
 
     if ( it->type != TokenType::ADD && it->type != TokenType::SUB)
-        return std::cout <<  ", expected +,-:", nullptr;
+        return  nullptr;
 
     transaction.setMiddle(result = new Operation);
     if ( it->type == TokenType::ADD )
@@ -105,7 +105,7 @@ ExprNode* getMulDiv (std::list<Token>::iterator& it, std::list<Token>::iterator 
         return nullptr;
 
     if ( it->type != TokenType::MUL && it->type != TokenType::DIV)
-        return std::cout << ", expected *,/:", nullptr;
+        return nullptr;
 
     transaction.setMiddle(result = new ExprNode);
     if ( it->type == TokenType::MUL )
@@ -140,10 +140,7 @@ ExprNode* getBrackets (std::list<Token>::iterator& it, std::list<Token>::iterato
         ExprNode* result = getExpression (it, end);
         transaction.setMiddle (result);
         if ( it == end || it->type != TokenType::BRACKET_CLOSE )
-        {
-            std::cout << ", bracket mismatch";
             return nullptr;
-        }
         it++;
         transaction.commit();
         return result;
