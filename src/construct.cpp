@@ -94,7 +94,12 @@ ExprNode* getLeaf (std::list<Token>::iterator& it, std::list<Token>::iterator en
 
 ExprNode* constructTree (std::list<Token>& tokens, std::string& error)
 {
-    return getGr0 (tokens.begin(), tokens.end(), error);
+    auto it = tokens.begin ();
+    auto end = tokens.end ();
+    if ( it == end )
+        return nullptr;
+
+    return getGr0 (it, end, error);
 }
 
 } /* namespace Expresser */
