@@ -58,7 +58,7 @@ ExprNode* getAddSub (std::list<Token>::iterator& it, std::list<Token>::iterator 
     if ( it->type != TokenType::ADD && it->type != TokenType::SUB)
         return std::cout <<  ", expected +,-:", nullptr;
 
-    transaction.setMiddle(result = new ExprNode);
+    transaction.setMiddle(result = new Operation);
     if ( it->type == TokenType::ADD )
         result->setData ("+");
     else
@@ -166,7 +166,7 @@ ExprNode* getLeaf (std::list<Token>::iterator& it, std::list<Token>::iterator en
     }
     else if ( it->type == TokenType::IDENTIFIER )
     {
-        result = new ExprNode;
+        result = new Call;
         ExprNode* left = new ExprNode;
         ExprNode* right = nullptr;
         transaction.setMiddle (result);
