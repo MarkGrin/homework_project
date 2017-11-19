@@ -46,6 +46,16 @@ Expresser::ExprNode* findLow (Expresser::ExprNode* node)
     return nullptr;
 }
 
+std::string formString (std::size_t i)
+{
+    if ( i < 10 )
+        return "00" + std::to_string(i);
+    else if ( i < 100 )
+        return "0" + std::to_string(i);
+    else
+        return std::to_string(i);
+}
+
 void evaluate (Expresser::ExprNode* node, const char* name)
 {
     std::string fileName = name;
@@ -54,13 +64,13 @@ void evaluate (Expresser::ExprNode* node, const char* name)
     while ( lowNode != node )
     {
         i++;
-        draw (node, name + std::to_string(i) + ".png");
+        draw (node, name + formString(i) + ".png");
         lowNode = findLow (node);
         if ( !lowNode )
             break;
         lowNode->evaluate();
     }
-    draw (node, name + std::to_string(i) + ".png");
+    draw (node, name + formString(i) + ".png");
 }
 
 int main (int argc, char** argv)
