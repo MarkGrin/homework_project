@@ -15,7 +15,7 @@ int main (int argc, char** argv)
     node.getRight()->setData("Beta");
     node.getLeft()->setData("Gamma");
 
-    std::string graphString = "graph {\n";
+    std::string graphString = "digraph {\n";
     std::size_t i = 0;
     node.write (graphString, i);
     graphString += "\n}";
