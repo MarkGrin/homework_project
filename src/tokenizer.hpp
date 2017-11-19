@@ -31,6 +31,6 @@ struct Token {
 
 std::list<Token> tokenize (const std::string& text);
 
-}
+} /* namespace Expresser */
 
 #endif /* H_CD0455C3A344497DB063A4DE72C9A90A */

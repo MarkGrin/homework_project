@@ -1,25 +1,18 @@
 #include "tokenizer.hpp"
-#include "tree.hpp"
+#include "construct.hpp"
 
 #include <iostream>
 #include <fstream>
 #include <graphviz/gvc.h>
 
-int main (int argc, char** argv)
+void generate (Expresser::ExprNode* node)
 {
-
-    Expresser::ExprNode node;
-    node.setData ("Alpha");
-    node.setLeft (new Expresser::ExprNode());
-    node.setRight(new Expresser::ExprNode());
-    node.getRight()->setData("Beta");
-    node.getLeft()->setData("Gamma");
-
     std::string graphString = "digraph {\n";
     std::size_t i = 0;
-    node.write (graphString, i);
+    node->write (graphString, i);
     graphString += "\n}";
 
+    std::cout << ".dot result\n";
     std::cout << graphString << "\n";
 
     Agraph_t* graph = agmemread(const_cast<char*>(graphString.data()));
@@ -34,7 +27,10 @@ int main (int argc, char** argv)
     gvFreeLayout(gvc, graph);
     agclose (graph); 
     gvFreeContext(gvc);
+}
 
+int main (int argc, char** argv)
+{
     if ( argc != 2 )
     {
         std::cout << "Usage: expresser $1\n$1 - filename with expression\n";
@@ -58,9 +54,25 @@ int main (int argc, char** argv)
     std::cout << expression;
 
     std::list<Expresser::Token> tokens = Expresser::tokenize(expression);
+    std::cout << "token result:\n";
     for (const auto& token : tokens)
         std::cout << token.value << ":" << token.type << ",";
     std::cout << "\n";
+
+    if ( tokens.empty() )
+        return 1;
+
+    std::string error;
+    Expresser::ExprNode* node = constructTree (tokens, error);
+
+    if ( !error.empty() || !node )
+    {
+        std::cout << "ERROR:" << error << "\n";
+        std::cout << "node:" << node << "\n";
+        return 1;
+    }
+
+    generate (node);
 
     return 0;
 }

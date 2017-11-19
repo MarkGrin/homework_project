@@ -42,7 +42,7 @@ namespace {
         }
         return value;
     }
-}
+} /* namespace */
 
 namespace Expresser
 {
@@ -81,4 +81,4 @@ std::list<Token> tokenize (const std::string& text)
     return result;
 }
 
-}
+} /* namespace Expresser */

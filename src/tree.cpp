@@ -36,5 +36,5 @@ void ExprNode::write (std::string& dot, std::size_t& node)
 
 }    
 
-}
+} /* namespace Expresser */
 
