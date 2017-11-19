@@ -72,5 +72,8 @@ int main (int argc, char** argv)
 
     generate (node);
 
+    if (node)
+        delete node;
+
     return 0;
 }
