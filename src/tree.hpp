@@ -47,7 +47,7 @@ class ExprNode
     }
     bool isLeaf () const
     {
-        return !(left_||right_);
+        return !left_ && !right_;
     }
 
     void setData (const std::string& data)

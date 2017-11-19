@@ -12,9 +12,6 @@ void draw (const Expresser::ExprNode* node, const std::string& name)
     node->write (graphString, i);
     graphString += "\n}";
 
-    std::cout << ".dot result\n";
-    std::cout << graphString << "\n";
-
     Agraph_t* graph = agmemread(const_cast<char*>(graphString.data()));
 
     GVC_t* gvc;
@@ -35,6 +32,7 @@ Expresser::ExprNode* findLow (Expresser::ExprNode* node)
     Expresser::ExprNode* right = node->getRight();
     if ( left && right && left->isLeaf() && right->isLeaf() )
         return node;
+
     if ( left )
     {
         return findLow (left);
@@ -53,6 +51,7 @@ void evaluate (Expresser::ExprNode* node, const char* name)
     std::size_t i = 0;
     while ( lowNode != node )
     {
+        i++;
         draw (node, name + std::to_string(i) + ".png");
         lowNode = findLow (node);
         if ( !lowNode )
