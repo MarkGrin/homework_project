@@ -32,10 +32,12 @@ Expresser::ExprNode* findLow (Expresser::ExprNode* node)
     Expresser::ExprNode* right = node->getRight();
     if ( left && right && left->isLeaf() && right->isLeaf() )
         return node;
-
+    Expresser::ExprNode* result;
     if ( left )
     {
-        return findLow (left);
+         result = findLow (left);
+         if ( result )
+             return result;
     }
     if ( right )
     {
