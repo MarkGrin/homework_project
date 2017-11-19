@@ -55,6 +55,8 @@ void evaluate (Expresser::ExprNode* node, const char* name)
     {
         draw (node, name + std::to_string(i) + ".png");
         lowNode = findLow (node);
+        if ( !lowNode )
+            break;
         lowNode->evaluate();
     }
     draw (node, name + std::to_string(i) + ".png");
