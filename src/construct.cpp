@@ -11,8 +11,7 @@ namespace
 
 ExprNode* getGr0 (std::list<Token>::iterator& it, std::list<Token>::iterator end);
 ExprNode* getExpression (std::list<Token>::iterator& it, std::list<Token>::iterator end);
-ExprNode* getAdd (std::list<Token>::iterator& it, std::list<Token>::iterator end);
-ExprNode* getSub (std::list<Token>::iterator& it, std::list<Token>::iterator end);
+ExprNode* getAddSub (std::list<Token>::iterator& it, std::list<Token>::iterator end);
 ExprNode* getMulDiv (std::list<Token>::iterator& it, std::list<Token>::iterator end);
 ExprNode* getBrackets (std::list<Token>::iterator& it, std::list<Token>::iterator end);
 ExprNode* getLeaf (std::list<Token>::iterator& it, std::list<Token>::iterator end);
@@ -24,68 +23,13 @@ ExprNode* getGr0 (std::list<Token>::iterator& it, std::list<Token>::iterator end
 
 ExprNode* getExpression (std::list<Token>::iterator& it, std::list<Token>::iterator end)
 {
-    ExprNode* result =  getAdd (it, end);
-    if ( !result )
-        result = getSub (it, end);
+    ExprNode* result =  getAddSub (it, end);
     if ( !result )
         result = getMulDiv (it, end);
     return result;
 }
 
-ExprNode* getAdd (std::list<Token>::iterator& it, std::list<Token>::iterator end)
-{
-    if (it == end)
-        return nullptr;
-
-    ParseTransaction transaction (it);
-
-    ExprNode* left;
-    ExprNode* right;
-    ExprNode* result;
-
-    left = getSub (it, end);
-    if ( !left )
-        left = getMulDiv (it, end);
-    if ( !left )
-        left = getBrackets (it, end);
-    if ( !left )
-        left = getLeaf (it, end);
-    if ( !left )
-        return nullptr;
-
-    transaction.setLeft (left);
-
-    if ( it == end )
-        return nullptr;
-
-    if ( it->type != TokenType::ADD && it->type != TokenType::SUB)
-        return std::cout <<  ", expected +,-:", nullptr;
-
-    transaction.setMiddle(result = new ExprNode);
-    if ( it->type == TokenType::ADD )
-        result->setData ("+");
-    else
-        result->setData ("-");
-
-    it++;
-
-    right = getExpression (it, end);
-    if ( !right )
-        right = getBrackets (it, end);
-    if ( !right )
-        right = getLeaf (it, end);
-    if ( !right )
-        return nullptr;
-
-
-    result->setLeft (left);
-    result->setRight (right);
-
-    transaction.commit();
-    return result;
-}
-
-ExprNode* getSub (std::list<Token>::iterator& it, std::list<Token>::iterator end)
+ExprNode* getAddSub (std::list<Token>::iterator& it, std::list<Token>::iterator end)
 {
     if (it == end)
         return nullptr;
