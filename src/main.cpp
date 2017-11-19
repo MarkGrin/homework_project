@@ -56,7 +56,7 @@ int main (int argc, char** argv)
     std::list<Expresser::Token> tokens = Expresser::tokenize(expression);
     std::cout << "token result:\n";
     for (const auto& token : tokens)
-        std::cout << token.value << ":" << token.type << ",";
+        std::cout << "{" << token.value << "}:[" << token.type << "], ";
     std::cout << "\n";
 
     if ( tokens.empty() )
