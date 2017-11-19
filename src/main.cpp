@@ -31,23 +31,17 @@ void draw (const Expresser::ExprNode* node, const std::string& name)
 
 Expresser::ExprNode* findLow (Expresser::ExprNode* node)
 {
-    if ( node->isLeaf() )
-        return node;
     Expresser::ExprNode* left  = node->getLeft();
     Expresser::ExprNode* right = node->getRight();
+    if ( left && right && left->isLeaf() && right->isLeaf() )
+        return node;
     if ( left )
     {
-        if ( left->isLeaf() )
-            return left;
-        else
-            return findLow (left);
+        return findLow (left);
     }
     if ( right )
     {
-        if ( right->isLeaf() )
-            return right;
-        else
-            return findLow (right);
+        return findLow (right);
     }
     return nullptr;
 }
