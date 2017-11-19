@@ -25,7 +25,9 @@ class ExprNode
 
     ExprNode ();
 
-    virtual void write (std::string& dot, std::size_t& node);
+    void write (std::string& dot, std::size_t& node) const;
+    virtual void evaluate ();
+
 
     void setLeft (ExprNode* left)
     {
@@ -43,15 +45,41 @@ class ExprNode
     {
         return right_;
     }
+    bool isLeaf () const
+    {
+        return !(left_||right_);
+    }
 
     void setData (const std::string& data)
     {
         data_ = data;
     }
+    std::string getData ()
+    {
+        return data_;
+    }
+
 
     virtual ~ExprNode ();
 
 };
+
+class Operation : public ExprNode
+{
+    public:
+    
+    void evaluate () override;    
+};
+
+class Call : public ExprNode
+{
+    public:
+    
+    void evaluate () override;    
+};
+
+;
+
     
 } /* namespace Expresser */
 

@@ -5,7 +5,7 @@
 #include <fstream>
 #include <graphviz/gvc.h>
 
-void generate (Expresser::ExprNode* node)
+void draw (const Expresser::ExprNode* node, const std::string& name)
 {
     std::string graphString = "digraph {\n";
     std::size_t i = 0;
@@ -22,11 +22,48 @@ void generate (Expresser::ExprNode* node)
 
     gvLayout (gvc, graph, "dot");
 
-    gvRenderFilename (gvc, graph, "png", "a.png");
+    gvRenderFilename (gvc, graph, "png", name.data());
 
     gvFreeLayout(gvc, graph);
     agclose (graph); 
     gvFreeContext(gvc);
+}
+
+Expresser::ExprNode* findLow (Expresser::ExprNode* node)
+{
+    if ( node->isLeaf() )
+        return node;
+    Expresser::ExprNode* left  = node->getLeft();
+    Expresser::ExprNode* right = node->getRight();
+    if ( left )
+    {
+        if ( left->isLeaf() )
+            return left;
+        else
+            return findLow (left);
+    }
+    if ( right )
+    {
+        if ( right->isLeaf() )
+            return right;
+        else
+            return findLow (right);
+    }
+    return nullptr;
+}
+
+void evaluate (Expresser::ExprNode* node, const char* name)
+{
+    std::string fileName = name;
+    Expresser::ExprNode* lowNode = nullptr;
+    std::size_t i = 0;
+    while ( lowNode != node )
+    {
+        draw (node, name + std::to_string(i) + ".png");
+        lowNode = findLow (node);
+        lowNode->evaluate();
+    }
+    draw (node, name + std::to_string(i) + ".png");
 }
 
 int main (int argc, char** argv)
@@ -70,7 +107,7 @@ int main (int argc, char** argv)
         return 1;
     }
 
-    generate (node);
+    evaluate (node, argv[1]);
 
     if (node)
         delete node;

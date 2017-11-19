@@ -26,7 +26,7 @@ class ParseTransaction
 
     public:
 
-    ParseTransaction (std::list<Token>::iterator& save);
+    explicit ParseTransaction (std::list<Token>::iterator& save);
 
     void setLeft (const ExprNode* l);
     void setRight (const ExprNode* r);
