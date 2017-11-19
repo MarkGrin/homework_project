@@ -26,8 +26,11 @@ class ParseTransaction
 
     ParseTransaction (std::list<Token>::iterator& save)
         :
-            backup  (it),
+            backup  (save),
             it      (save),
+            left    (nullptr),
+            right   (nullptr),
+            middle  (nullptr),
             success (false)
     {}
 
