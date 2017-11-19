@@ -62,12 +62,10 @@ int main (int argc, char** argv)
     if ( tokens.empty() )
         return 1;
 
-    std::string error;
-    Expresser::ExprNode* node = constructTree (tokens, error);
+    Expresser::ExprNode* node = constructTree (tokens);
 
-    if ( !error.empty() || !node )
+    if ( !node )
     {
-        std::cout << "ERROR:" << error << "\n";
         std::cout << "node:" << node << "\n";
         return 1;
     }

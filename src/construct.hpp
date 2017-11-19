@@ -8,7 +8,7 @@
 namespace Expresser
 {
 
-ExprNode* constructTree (std::list<Token>& tokens, std::string& error);
+ExprNode* constructTree (std::list<Token>& tokens);
 
 } /* namespace Expresser */
 
