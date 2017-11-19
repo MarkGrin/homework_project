@@ -107,7 +107,7 @@ ExprNode* getMulDiv (std::list<Token>::iterator& it, std::list<Token>::iterator 
     if ( it->type != TokenType::MUL && it->type != TokenType::DIV)
         return nullptr;
 
-    transaction.setMiddle(result = new ExprNode);
+    transaction.setMiddle(result = new Operation);
     if ( it->type == TokenType::MUL )
         result->setData ("*");
     else
