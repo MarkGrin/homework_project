@@ -20,15 +20,15 @@ void ExprNode::write (std::string& dot, std::size_t& node)
 {
     std::size_t nodeNumber = node;
     node++;
-    dot += "node" + std::to_string(nodeNumber) + "[label=\"" + data_ + "\"];\n";
+    dot += "node" + std::to_string(nodeNumber) + " [label=\"" + data_ + "\"];\n";
     if ( left_ )
     {
-        dot += "node" + std::to_string(nodeNumber) + " - node" + std::to_string(node) + ";\n";
+        dot += "node" + std::to_string(nodeNumber) + " -> node" + std::to_string(node) + ";\n";
         left_->write(dot, node);
     }
     if ( right_ )
     {
-        dot += "node" + std::to_string(nodeNumber) + " - node" + std::to_string(node) + ";\n";
+        dot += "node" + std::to_string(nodeNumber) + " -> node" + std::to_string(node) + ";\n";
         right_->write(dot, node);
     }
 
