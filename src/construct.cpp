@@ -46,7 +46,7 @@ ExprNode* getAdd (std::list<Token>::iterator& it, std::list<Token>::iterator end
         return delete left, nullptr;
 
     if ( it->type != TokenType::ADD )
-        return delete left, error += ", expected +", nullptr;
+        return delete left, error += ", expected +:", nullptr;
 
     result = new ExprNode;
     result->setData("+");
@@ -67,6 +67,7 @@ ExprNode* getAdd (std::list<Token>::iterator& it, std::list<Token>::iterator end
 
     result->setLeft (left);
     result->setRight (right);
+    it++;
     return result;
 }
 
