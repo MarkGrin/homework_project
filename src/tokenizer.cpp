@@ -29,6 +29,7 @@ namespace {
             value.push_back (*it);
             it++;
         }
+        it--;
         return value;
     }
 
@@ -40,6 +41,7 @@ namespace {
             value.push_back (*it);
             it++;
         }
+        it--;
         return value;
     }
 } /* namespace */
