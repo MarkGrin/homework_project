@@ -2,9 +2,28 @@
 
 #include <iostream>
 #include <fstream>
+#include "gvc.h"
 
 int main (int argc, char** argv)
 {
+    const char* charGraph = "graph{\na -- b;\n}\0";
+    Agraph_t* graph = agmemread(const_cast<char*>(charGraph));
+    if (graph)
+        std::cout << "GRAPH\n";
+
+    GVC_t* gvc;
+    gvc = gvContext();
+    if (gvc)
+        std::cout << "GVC\n";
+
+    gvLayout (gvc, graph, "dot");
+
+    gvRenderFilename (gvc, graph, "png", "a.png");
+
+    gvFreeLayout(gvc, graph);
+    agclose (graph); 
+    gvFreeContext(gvc);
+
     if ( argc != 2 )
     {
         std::cout << "Usage: expresser $1\n$1 - filename with expression\n";

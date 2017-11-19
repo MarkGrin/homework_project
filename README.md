@@ -1,20 +1,26 @@
 # homework_project
 CoSec 161 Melnikov Lev
 
-## lexics
 
+## lexics
 OPEN_BRACKET (
+
 CLOSE_BRACKET )
+
 PLUS +
+
 MINUS -
+
 DIV /
+
 MUL *
+
 IDENTIFIER [a-z]*
+
 NUMBER [0-9]*
 
 
 ## syntax
-
 expression :
   (expression)
   add
