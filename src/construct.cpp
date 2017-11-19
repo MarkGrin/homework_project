@@ -142,6 +142,7 @@ ExprNode* getBrackets (std::list<Token>::iterator& it, std::list<Token>::iterato
             error += ", bracket mismatch";
             return nullptr;
         }
+        it++;
         transaction.commit();
         return result;
     }
