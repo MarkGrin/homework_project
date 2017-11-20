@@ -3,43 +3,35 @@ CoSec 161 Melnikov Lev
 
 
 ## lexics
-OPEN_BRACKET (
-
-CLOSE_BRACKET )
-
-PLUS +
-
-MINUS -
-
-DIV /
-
-MUL *
-
-IDENTIFIER [a-z]*
-
-NUMBER [0-9]*
+* OPEN_BRACKET (
+* CLOSE_BRACKET )
+* PLUS +
+* MINUS -
+* DIV /
+* MUL *
+* IDENTIFIER [a-z]*
+* NUMBER [0-9]*
 
 
 ## syntax
 expression :
-  (expression)
-  add
-  sub
+ * add_sub
+ * mul_div
+ * leaf
 
-add :
-  term+term
+add_sub :
+ * [mul_div, brackets, leaf] [+,-] [expression, brackets, leaf]
 
-sub :
-  term-term
+mul_div :
+ * [brackets, leaf] [*,/] [mul_div, brackets, leaf]
 
-term :
-  mul
-  div
-  expression
-  num
+brackets :
+ * (expression)
 
-mul :
-  element*element
+leaf :
+ * number
+ * func_call
 
-div :
-  element/element
+func_call :
+ * identifier brackets
+
